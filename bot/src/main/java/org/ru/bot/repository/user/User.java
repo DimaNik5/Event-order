@@ -1,10 +1,7 @@
 package org.ru.bot.repository.user;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,7 +17,7 @@ import java.util.List;
  * Представляет аккаунт пользователя с учетными данными.
  */
 @Entity
-@Table(name = "users")
+@Table(name = "user_role_view")
 public class User implements UserDetails {
 
     @Id
@@ -29,6 +26,7 @@ public class User implements UserDetails {
     private String name;
     private String email;
     private String password;
+    @Column(name = "role_name")
     private String role;
 
     public User(Long id, String name, String email, String password, String role) {

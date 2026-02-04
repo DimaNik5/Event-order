@@ -1,7 +1,6 @@
 package org.ru.bot.service;
 
-import org.ru.bot.repository.user.User;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.ru.bot.config.BotConfig;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.Mac;
@@ -16,8 +15,12 @@ import java.util.stream.Collectors;
 @Service
 public class TelegramAuthService {
 
-    private static final String BOT_TOKEN = "YOUR_BOT_TOKEN";
     private static final String SECRET_KEY = "WebAppData";
+    private final BotConfig botConfig;
+
+    public TelegramAuthService(BotConfig botConfig) {
+        this.botConfig = botConfig;
+    }
 
     public boolean verifyTelegramData(String initData) {
         try {
@@ -31,7 +34,7 @@ public class TelegramAuthService {
                     .map(entry -> entry.getKey() + "=" + entry.getValue())
                     .collect(Collectors.joining("\n"));
 
-            String secretKey = HmacSHA256(SECRET_KEY, BOT_TOKEN);
+            String secretKey = HmacSHA256(SECRET_KEY, botConfig.getToken());
             String calculatedHash = HmacSHA256(dataCheckString, secretKey);
 
             return calculatedHash.equals(receivedHash);

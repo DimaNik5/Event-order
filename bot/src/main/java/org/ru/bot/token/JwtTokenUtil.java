@@ -38,7 +38,7 @@ public class JwtTokenUtil {
     /**
      * Создает JWT токен с указанными параметрами
      */
-    private String createToken(UserDetails user, boolean is_access) {
+    public String createToken(UserDetails user, boolean is_access) {
 
         return Jwts.builder()
                 .setSubject(user.getUsername())
