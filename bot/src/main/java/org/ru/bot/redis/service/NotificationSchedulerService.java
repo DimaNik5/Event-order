@@ -6,6 +6,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.ru.bot.redis.dto.NotificationOfEvent;
 import org.ru.bot.redis.dto.NotificationType;
+import org.ru.bot.telegram.service.TelegramBot;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -25,23 +26,18 @@ public class NotificationSchedulerService {
 
     private final RedisTemplate<String, String> redisTemplate;
     private ZSetOperations<String, String> zSetOps;
+    private TelegramBot telegramBot;
 
-    public NotificationSchedulerService(RedisTemplate<String, String> redisTemplate) {
+    public NotificationSchedulerService(RedisTemplate<String, String> redisTemplate, TelegramBot telegramBot) {
         this.redisTemplate = redisTemplate;
+        this.telegramBot = telegramBot;
     }
 
     // Ключи Redis
     private static final String NOTIFICATION_QUEUE = "notifications:scheduled";
     private static final String NOTIFICATION_DATA = "notifications:data:";
-//    private static final String USER_SETTINGS = "user:settings:";
-//    private static final String NOTIFICATION_HISTORY = "notifications:history:";
 
     private final ExecutorService notificationExecutor = Executors.newFixedThreadPool(5);
-
-
-    // Время отправки по умолчанию (10:00 утра)
-//    private static final int DEFAULT_HOUR = 10;
-//    private static final int DEFAULT_MINUTE = 0;
 
     @PostConstruct
     public void init() {
@@ -168,38 +164,25 @@ public class NotificationSchedulerService {
 //            log.info("Отправляем уведомление пользователю {}: {}",
 //                    payload.getUserId(), payload.getType());
 
-            // В реальном приложении здесь будет:
-//            switch (payload.getType()) {
-//                case NotificationType.EMAIL_DAILY_DIGEST:
-//                    return sendEmail(payload.getUserId(), "Ежедневный дайджест",
-//                            buildDailyDigestContent(payload.getData()));
-//
-//                case NotificationType.EMAIL_WEEKLY_REPORT:
-//                    return sendEmail(payload.getUserId(), "Еженедельный отчет",
-//                            buildWeeklyReportContent(payload.getData()));
-//
-//                case NotificationType.PUSH_REMINDER:
-//                    return sendPushNotification(payload.getUserId(),
-//                            "Напоминание", payload.getData());
-//
-//                case NotificationType.EMAIL_PROMOTION:
-//                    return sendEmail(payload.getUserId(), "Специальное предложение",
-//                            buildPromotionContent(payload.getData()));
-//
-//                case NotificationType.PUSH_ABANDONED_CART:
-//                    return sendPushNotification(payload.getUserId(),
-//                            "Завершите покупку", payload.getData());
-//
-//                default:
-////                    log.warn("Неизвестный тип уведомления: {}", payload.getType());
-//                    return false;
-//            }
+            switch (payload.getType()) {
+                case SERVICE:
+                    return telegramBot.notifyService(payload.getEventId());
+
+                case INVITATION:
+                    return telegramBot.notifyInvitation(payload.getEventId());
+
+                case DELETE_EVENT:
+                    return telegramBot.notifyDelete(payload.getEventId());
+
+                default:
+//                    log.warn("Неизвестный тип уведомления: {}", payload.getType());
+                    return false;
+            }
 
         } catch (Exception e) {
 //            log.error("Ошибка в sendNotification", e);
             return false;
         }
-        return false;
     }
 
 

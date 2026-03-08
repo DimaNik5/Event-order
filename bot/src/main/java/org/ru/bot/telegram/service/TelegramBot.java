@@ -61,7 +61,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             sendMessage(user.getId(), "Вы успешно зарегестрировались, ожидайте когда вас примут");
             return;
         }
-        sendMessage(user.getId(), "Вы ужу зарегестрированы");
+        sendMessage(user.getId(), "Вы уже зарегестрированы");
     }
 
     private void handleHelpCommand(Update update) {
@@ -84,4 +84,16 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
+    // TODO рассылку уведомлений
+    public boolean notifyService(String eventId) {
+        return false;
+    }
+
+    public boolean notifyInvitation(String eventId) {
+        return false;
+    }
+
+    public boolean notifyDelete(String eventId) {
+        return false;
+    }
 }

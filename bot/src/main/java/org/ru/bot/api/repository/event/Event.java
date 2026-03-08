@@ -17,14 +17,12 @@ public class Event {
     @Column(name = "event_time")
     private Instant eventTime;
     private Long creator;
-    private String description;
 
-    public Event(Long id, String name, Instant eventTime, Long creator, String description) {
+    public Event(Long id, String name, Instant eventTime, Long creator) {
         this.id = id;
         this.name = name;
         this.eventTime = eventTime;
         this.creator = creator;
-        this.description = description;
     }
 
     public Event() {
@@ -62,11 +60,4 @@ public class Event {
         this.creator = creator;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

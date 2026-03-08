@@ -1,9 +1,11 @@
-CREATE SEQUENCE users_id_seq START WITH -1 INCREMENT BY -1;
+
 CREATE TABLE users (
-    id BIGINT DEFAULT nextval('users_id_seq') PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     name VARCHAR(130) NOT NULL,
-    email VARCHAR(50) UNIQUE,
+    tg_id BIGINT UNIQUE,
+    email VARCHAR(254) UNIQUE,
     password VARCHAR(60),
+    number VARCHAR(12),
     id_role INTEGER REFERENCES roles(id) ON DELETE SET NULL
 );
 
@@ -16,8 +18,10 @@ CREATE OR REPLACE VIEW user_role_view AS
 SELECT 
     u.id,
     u.name,
+    u.tg_id,
     u.email,
     u.password,
+    u.number,
     r.role_name
 FROM users u
 LEFT JOIN roles r 
@@ -31,9 +35,9 @@ BEGIN
     IF NEW.name IS NULL THEN
         RAISE EXCEPTION 'Нужно передать имя';
     END IF;
-    IF NEW.id IS NOT NULL THEN
-        INSERT INTO users (id, name)
-        VALUES (NEW.id, NEW.name);
+    IF NEW.tg_id IS NOT NULL THEN
+        INSERT INTO users (tg_id, name, number)
+        VALUES (NEW.tg_id, NEW.name, NEW.number);
     ELSE THEN
         IF NEW.email IS NULL THEN
             RAISE EXCEPTION 'Нужно передать почту';
@@ -61,8 +65,10 @@ BEGIN
     SELECT id INTO id_of_role FROM roles WHERE name = NEw.role_name;
     UPDATE users 
     SET name = NEW.name,
+        tg_id - NEW.tg_id,
         email = NEW.email,
         password = NEW.password,
+        number = NEW.number,
         id_role = id_of_role
     WHERE id = OLD.id;
     
@@ -101,7 +107,7 @@ CREATE TABLE group_of_specialization (
 CREATE TABLE specialization (
     id SERIAL PRIMARY KEY,
     name VARCHAR(30) UNIQUE NOT NULL,
-    id_group INTEGER REFERENCES group_of_specialization(id) ON DELETE CASCADE
+    id_group INTEGER REFERENCES group_of_specialization(id) ON DELETE CASCADE NOT NULL
 );
 
 CREATE TABLE specialization_of_user (
@@ -114,7 +120,13 @@ CREATE TABLE events (
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     event_time TIMESTAMPTZ NOT NULL,
-    creator BIGINT REFERENCES users(id) NOT NULL,
+    creator BIGINT REFERENCES users(id) NOT NULL DELETE CASCADE
+);
+
+CREATE TABLE page (
+    id BIGSERIAL PRIMARY KEY,
+    id_event BIGINT REFERENCES events(id) NOT NULL DELETE CASCADE,
+    name VARCHAR(30) NOT NULL DEFAULT 'Описание',
     description TEXT NOT NULL DEFAULT ''
 );
 
@@ -134,3 +146,4 @@ CREATE TABLE comment (
     updated_time TIMESTAMPTZ,
     is_edited BOOLEAN DEFAULT FALSE
 );
+

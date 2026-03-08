@@ -3,6 +3,10 @@ package org.ru.bot.api.service;
 
 import org.ru.bot.api.dto.request.RefreshRequest;
 import org.ru.bot.api.dto.request.UserIn;
+import org.ru.bot.api.dto.responce.exception.BadRequestException;
+import org.ru.bot.api.dto.responce.exception.token.NotRefreshTokenException;
+import org.ru.bot.api.dto.responce.exception.user.EmailHasBeenUsedAlreadyException;
+import org.ru.bot.api.dto.responce.exception.user.UserNotFoundException;
 import org.ru.bot.api.repository.user.User;
 import org.ru.bot.api.repository.user.UserRepository;
 import org.ru.bot.api.dto.responce.JwtResponse;
@@ -37,7 +41,7 @@ public class UserService {
         boolean isTg = userIn.id() != null;
         if(!isTg){
             if(userIn.email() == null || userIn.password() == null){
-                throw new RuntimeException("bad request");
+                throw new BadRequestException("Пропущены важные поля");
             }
         }
 
@@ -45,11 +49,11 @@ public class UserService {
                                         userRepository.findById(userIn.id()) :
                                         userRepository.findByEmail(userIn.email());
         if(optionalUser.isEmpty()){
-            throw new RuntimeException("user not found");
+            throw new UserNotFoundException();
         }
         User user = optionalUser.get();
         if(!user.checkPassword(userIn.password())){
-            throw new RuntimeException("uncorrect password");
+            throw new UserNotFoundException();
         }
         String accessToken = jwtTokenUtil.createToken(user, true);
         String refreshToken = jwtTokenUtil.createToken(user, false);
@@ -66,13 +70,13 @@ public class UserService {
     public JwtResponse create(UserIn userIn) {
         if(userIn.name() == null || userIn.name().isEmpty() ||
                 userIn.email() == null || userIn.password() == null){
-            throw new RuntimeException("bad request");
+            throw new BadRequestException("Пропущены важные поля");
         }
         Optional<User> optionalUser = userRepository.findByEmail(userIn.email());
         if(optionalUser.isPresent()){
-            throw new RuntimeException("user is already");
+            throw new EmailHasBeenUsedAlreadyException();
         }
-        User user = new User(null, userIn.name(), userIn.email(), userIn.password(), null);
+        User user = new User(null, userIn.name(), userIn.email(), userIn.password(), userIn.number(), null);
 
         userRepository.save(user);
         String accessToken = jwtTokenUtil.createToken(user, true);
@@ -84,13 +88,13 @@ public class UserService {
     public boolean createByTelegram(UserIn userIn) {
         if(userIn.name() == null || userIn.name().isEmpty() ||
                 userIn.id() == null){
-            throw new RuntimeException("bad request");
+            throw new BadRequestException("Пропущены важные поля");
         }
         Optional<User> optionalUser = userRepository.findById(userIn.id());
         if(optionalUser.isPresent()){
             return false;
         }
-        User user = new User(userIn.id(), userIn.name(), null, null, null);
+        User user = new User(userIn.id(), userIn.name(), null, null, userIn.number(), null);
 
         userRepository.save(user);
         return true;
@@ -116,12 +120,12 @@ public class UserService {
                 optionalUser = userRepository.findByEmail(username);
             }
             if(optionalUser.isEmpty()){
-                throw new RuntimeException("user not found");
+                throw new UserNotFoundException();
             }
             String newAccessToken = jwtTokenUtil.createToken(optionalUser.get(), true);
             return new JwtResponse(newAccessToken, refreshToken);
         } else {
-            throw new RuntimeException("not refresh token exception");
+            throw new NotRefreshTokenException();
         }
     }
 }

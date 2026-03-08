@@ -26,14 +26,16 @@ public class User implements UserDetails {
     private String name;
     private String email;
     private String password;
+    private String number;
     @Column(name = "role_name")
     private String role;
 
-    public User(Long id, String name, String email, String password, String role) {
+    public User(Long id, String name, String email, String password, String number, String role) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
+        this.number = number;
         this.role = role;
     }
 
@@ -81,6 +83,14 @@ public class User implements UserDetails {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     @Override
