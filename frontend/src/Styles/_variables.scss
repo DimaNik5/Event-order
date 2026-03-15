@@ -1,0 +1,36 @@
+
+:root {
+    /* Светлая тема (по умолчанию) */
+    --info-color: #1f1a5d;
+    --board-color: #fff;
+    
+    --primary-color: #b2c9e2;
+    --accent-color: #1f1a5d;
+    --text-primary: #1f1a5d;
+    --text-secondary: #727271;
+    
+    --bg-one-1: #e5edff; /*фон верх*/
+    --bg-one-2: #fff;
+    --bg-two-1: #6881cf; /*правый*/
+    --bg-two-2: #fff;
+    --bg-three-1: #87adff; /*левый*/
+    --bg-three-2: #4131a8;
+}
+  
+  /* Темная тема */
+[data-theme="dark"] {
+    --info-color: #1f1a5d; /*Цвет информации на подложках*/
+    --board-color: #fff; /*Цвет подложки*/
+    
+    --primary-color: #1f1a5d; /*цвет элементов*/
+    --accent-color: #fff; /*акцентный цвет на элементах*/
+    --text-primary: #fff; /*цвет текста на элементах*/
+    --text-secondary: #d9dada; /*второй цвет текста для фоновой информации*/
+    
+    --bg-one-1: #4131a8; /*фон верх*/
+    --bg-one-2: #fff;
+    --bg-two-1: #1f1a5d; /*правый*/
+    --bg-two-2: #12083b;
+    --bg-three-1: #4131a8; /*левый*/
+    --bg-three-2: #1f1a5d;
+}

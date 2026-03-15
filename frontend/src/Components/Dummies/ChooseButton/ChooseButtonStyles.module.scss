@@ -1,0 +1,15 @@
+@import "../../../Styles/main.scss";
+
+.container{
+    height: 30px;
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 10px;
+}
+
+.content{
+    margin: auto 0;
+    color: white;
+    font-size: large;
+}

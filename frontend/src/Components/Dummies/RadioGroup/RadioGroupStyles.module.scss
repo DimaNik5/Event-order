@@ -1,0 +1,16 @@
+@import "../../../Styles/main.scss";
+
+
+.content{
+    // position: fixed;
+    @include flex-col;
+    @include scroll-y;
+    height: 100%;
+    width: 100%;
+    // padding: 10px;
+    // background-color: rgba(from var(--primary-color) r g b / 0.8);
+    // z-index: 100;
+    // clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 85%);
+    // padding-bottom: 15%;
+    
+}

@@ -1,0 +1,30 @@
+@import "../../../Styles/main.scss";
+
+.overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.55);
+    z-index: 99;
+}
+
+.panel{
+    display: none;
+    // @include scroll-y;
+    
+    .content{
+        // position: fixed;
+        // @include flex-col;
+        @include scroll-y;
+        height: 100%;
+        width: 100%;
+        padding: 10px;
+        background-color: rgba(from var(--primary-color) r g b / 0.8);
+        z-index: 100;
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 85%);
+        padding-bottom: 15%;
+        
+    }
+}

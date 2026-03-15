@@ -1,0 +1,67 @@
+/* .container-event{
+    
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+} */
+.content-event{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    flex-grow: 1;
+    position: relative;
+    top: 10px;
+    width: 100%;
+    padding: 10px;
+    background-color: rgba(from var(--board-color) r g b / 0.8);
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 95%);
+    overflow-y: scroll;
+    scrollbar-width: none;     /* Firefox */
+    -ms-overflow-style: none;  /* IE/Edge */
+}
+
+
+.btn-add-event{
+    background-color: var(--primary-color);
+    color: var(--accent-color);
+    font-size: large;
+    border: none;
+    text-align: center;
+    padding-bottom: 8px;
+    margin-top: 10px;
+    width: 100%;
+    height: 40px;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 50%);
+}
+
+
+
+.element-type-event{
+    justify-self: center;
+    height: 28px;
+    width: 28px;
+    margin:auto;
+    margin-right: 15px;
+}
+
+.element-info-event{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.element-name-event{
+    color: var(--text-primary);
+}
+
+.element-some-info-event{
+    color: var(--text-secondary)
+}
+
+.show{
+    display: block !important;
+}

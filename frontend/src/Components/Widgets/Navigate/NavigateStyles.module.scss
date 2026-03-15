@@ -1,0 +1,39 @@
+@import "../../../Styles/main";
+
+.container{
+    display: flex;
+    min-height: 50px;
+    width: 100%;
+    clip-path: polygon(0% 0%, 100% 40%, 100% 100%, 0% 100%);
+    background-color: rgba(from var(--board-color) r g b / 0.8);
+    
+}
+
+.left{
+    flex-grow: 2;
+    @include flex-center;
+    @include button-back;
+
+    div{
+        text-align: center;
+        font-size: large;
+    }
+
+}
+
+.centre{
+    flex-grow: 3;
+    @include flex-center;
+    @include button-back;
+    border-left: 2px solid;
+    border-right: 2px solid;
+    padding-bottom: 5px;
+    font-size: large;
+
+}
+.right{
+    @include flex-center;
+    @include button-back;
+    flex-grow: 2;
+    padding-bottom: 5px;
+}

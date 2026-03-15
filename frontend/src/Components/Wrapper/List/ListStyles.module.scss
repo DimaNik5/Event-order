@@ -1,0 +1,26 @@
+@import "../../../Styles/main.scss";
+
+.element{
+    background-color: var(--primary-color);
+    display: flex;
+    min-height: 70px;
+    width: 100%;
+    margin: 2px 0;
+    padding-left: 40px;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 80%);
+}
+
+.list{
+    @include flex-col;
+    @include scroll-y;
+    flex-grow: 1;
+    align-items: center;
+    max-height: 90%;
+    width: 100%;
+
+    .element:nth-child(even){
+        clip-path: polygon(0% 0%, 100% 20%, 100% 100%, 0% 100%);
+        margin-top: -12px;
+        padding-top: 12px;
+    }
+}

@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Backend/Структура.md",
+                "file": "Frontend/Структура.md",
                 "mode": "source",
                 "source": false
               },
@@ -78,7 +78,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "2db57fb9251cb7a7",
@@ -185,8 +186,8 @@
   },
   "active": "7a8bc7ccc40adca6",
   "lastOpenFiles": [
-    "Backend/Элементы/DB.md",
     "Backend/Структура.md",
+    "Backend/Элементы/DB.md",
     "Описание.md",
     "Frontend/Структура.md",
     "Network/Описание.md",

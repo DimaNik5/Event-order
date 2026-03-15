@@ -1,0 +1,20 @@
+/* Убираем все отступы и прокрутку */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: var(--info-color);
+    font-family: Arial;
+}
+  
+html, body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden; /* убирает прокрутку */
+}
+  
+#root {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
