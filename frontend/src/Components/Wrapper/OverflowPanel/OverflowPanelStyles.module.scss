@@ -15,8 +15,8 @@
     // @include scroll-y;
     
     .content{
-        // position: fixed;
         // @include flex-col;
+        position: absolute;
         @include scroll-y;
         height: 100%;
         width: 100%;

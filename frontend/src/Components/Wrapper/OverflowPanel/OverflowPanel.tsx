@@ -12,7 +12,7 @@ export function OverflowPanel(props: Props){
     return (
         <div ref={props.ref} className={styles.panel}>
             <div className={styles.overlay} onClick={props.close}></div>
-            <div className={styles.panel_content}>
+            <div className={styles.content}>
                 {props.children}
             </div>
         </div>

@@ -1,0 +1,30 @@
+@import "../../../Styles/main.scss";
+
+.container{
+    height: 100%;
+    width: 100%;
+}
+
+.contant{
+    flex-grow: 1;
+    height: 80%;
+    width: 100%;
+    * {
+        fill: var(--info-color);
+        color: var(--info-color);
+    }
+    button + div:empty {
+        
+        background-color: var(--info-color);
+    }
+}
+
+.conteiner{
+    @include flex-col;
+    margin-top: 10px;
+    height: 80%;
+    * {
+        max-height: 100%;
+    }
+
+}

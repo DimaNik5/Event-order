@@ -17,7 +17,7 @@ export default function SelectButton(props: Props){
 
     return (
         <div className={styles.btn}>
-            <button onClick={props.onClick}>
+            <button  onClick={props.onClick}>
                 <RhombIcon width="100%" height="100%" color='#fff'/>
             </button>
             {content}

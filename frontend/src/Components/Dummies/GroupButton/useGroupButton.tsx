@@ -24,39 +24,25 @@ export default function useGroupButton(props: Props){
     }, [props.content]);
 
     const clickOnElement = (name: string, flag: boolean) => {
-        props.handleSetList(prev => {
-            const newList = {
-                ...prev,
-                [name]: flag
-            };
-            return newList;
-        });
-
+        const newList = {
+            ...props.content,
+            [name]: flag
+        };
+        props.handleSetList(newList);
     }
 
     const click = () => {
-        if(lvlSet === SelectedType.CHECKBOX_ON){
-            props.handleSetList(prev => {
-                const newState = { ...prev };
-                Object.keys(newState).forEach(key => {
-                    newState[key] = false;
-                });
-                return newState;
-            });
-        }else{
-            props.handleSetList(prev => {
-                const newState = { ...prev };
-                Object.keys(newState).forEach(key => {
-                    newState[key] = true;
-                });
-                return newState;
-            });
-        }
+        const newState = { ...props.content };
+        Object.keys(newState).forEach(key => {
+            newState[key] = lvlSet !== SelectedType.CHECKBOX_ON;
+        });
+        props.handleSetList(newState);
     }
 
     const content = Object.keys(props.content).map((key) => {
         return <ChooseButton key={key} selected={props.content[key]}
-                type={TypeButton.CHECKBOX} handleClick={clickOnElement}>{key}</ChooseButton>
+                type={TypeButton.CHECKBOX} unpresseble={props.unpresseble}
+                handleClick={(name: string, flag: boolean) => !props.unpresseble && clickOnElement(name, flag)}>{key}</ChooseButton>
     });
 
     return [content, lvlSet, isOpen, setIsOpen, click] as const;

@@ -5,6 +5,7 @@ export interface ListType {
 
 export interface Props{
     content: ListType;
-    handleSetList: (updater: (prev: ListType) => ListType) => void;
+    handleSetList: (newContent: ListType) => void;
     children: React.ReactNode;
+    unpresseble?: boolean;
 }

@@ -12,7 +12,7 @@ export default function List<T>(props: Props<T>){
         <div className={styles.list}>
         {
             props.list.map((value: T, key) =>{
-                return <div key={key} className={styles.element} >
+                return <div key={key} className={styles.element} onClick={() => {if(props.onClick)props.onClick(value)}}>
                    {props.content(value).props.children}
                 </div>
             })

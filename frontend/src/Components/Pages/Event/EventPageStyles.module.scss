@@ -1,0 +1,29 @@
+@import "../../../Styles/main.scss";
+
+.panel{
+    position: absolute;
+    top: 70px;
+    right: 10px;
+    height: 150px;
+    width: 150px;
+}
+.element{
+
+    &_type{
+        justify-self: center;
+        height: 28px;
+        width: 28px;
+        margin:auto;
+        margin-right: 15px;
+    }
+    &_info{
+        @include flex-col;
+        flex-grow: 1;
+    }
+    &_name{
+        color: var(--text-primary);
+    }
+    &_some_info{
+        color: var(--text-secondary)
+    }
+}

@@ -9,4 +9,5 @@ export interface Props{
     handleClick(name: string, flag: boolean): void;
     selected?: boolean;
     children: string;
+    unpresseble?: boolean;
 }

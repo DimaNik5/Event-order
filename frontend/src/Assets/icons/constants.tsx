@@ -1,23 +1,27 @@
 import type { IconName } from "./type";
 
-import {ArrowIcon} from "./arrow.js"
-import {BellIcon} from "./bell.js"
-import {CalendarIcon} from "./calendar.js"
-import {CheckmarkIcon} from "./checkmark.js"
-import {CommentIcon} from "./comment.js"
-import {EditIcon} from "./edit.js"
-import {EmailIcon} from "./email.js"
-import {ExitIcon} from "./exit.js"
-import {FilterIcon} from "./filter.js"
-import {GarbageIcon} from "./garbage.js"
-import {LogoIcon} from "./logo.js"
-import {PasswordIcon} from "./password.js"
-import {PenIcon} from "./pen.js"
-import {PhoneIcon} from "./phone.js"
-import {PlusIcon} from "./plus.js"
-import {RhombIcon} from "./rhomb.js"
-import {TGIcon} from "./tg.js"
-import {UserIcon} from "./user.js"
+import {ArrowIcon} from "./arrow"
+import {BellIcon} from "./bell"
+import {CalendarIcon} from "./calendar"
+import {CheckmarkIcon} from "./checkmark"
+import {CommentIcon} from "./comment"
+import {EditIcon} from "./edit"
+import {EmailIcon} from "./email"
+import {ExitIcon} from "./exit"
+import {FilterIcon} from "./filter"
+import {GarbageIcon} from "./garbage"
+import {LogoIcon} from "./logo"
+import {PasswordIcon} from "./password"
+import {PenIcon} from "./pen"
+import {PhoneIcon} from "./phone"
+import {PlusIcon} from "./plus"
+import {RhombIcon} from "./rhomb"
+import {TGIcon} from "./tg"
+import {UserIcon} from "./user"
+import {LensIcon} from "./lens"
+import {EyeIcon} from "./eye"
+import {SaveIcon} from "./save"
+import { PointsIcon } from "./points";
 
 export const IconElements: Record<IconName, React.ReactElement> = {
     "arrow": <ArrowIcon height="100%" width="100%" color='var(--info-color)'/>,
@@ -37,5 +41,9 @@ export const IconElements: Record<IconName, React.ReactElement> = {
     "plus": <PlusIcon height="100%" width="100%" color='var(--info-color)'/>,
     "rhomb": <RhombIcon height="100%" width="100%" color='var(--info-color)'/>,
     "tg": <TGIcon height="100%" width="100%" color='var(--info-color)'/>,
-    "user": <UserIcon height="100%" width="100%" color='var(--info-color)'/>
+    "user": <UserIcon height="100%" width="100%" color='var(--info-color)'/>,
+    "lens": <LensIcon height="100%" width="100%" color='var(--info-color)'/>,
+    "eye": <EyeIcon height="100%" width="100%" color='var(--info-color)'/>,
+    "save": <SaveIcon height="100%" width="100%" color='var(--info-color)'/>,
+    "points": <PointsIcon height="100%" width="100%" color='var(--info-color)'/>
 };

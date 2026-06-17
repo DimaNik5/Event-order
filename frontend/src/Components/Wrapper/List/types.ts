@@ -6,4 +6,5 @@ interface DivElementProps {
 export default interface Props<T>{
     list: T[];
     content(el: T): React.ReactElement<DivElementProps> & { type: 'div' };
+    onClick?(el: T): void;
 }

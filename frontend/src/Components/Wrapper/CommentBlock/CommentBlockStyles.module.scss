@@ -1,0 +1,28 @@
+@import "../../../Styles/main.scss";
+
+.container{
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    margin-bottom: 10px;
+}
+
+.icon_con{
+    // height: 100%;
+}
+
+.icon{
+    height: 40px;
+    width: 40px;
+    position: sticky;
+    top: 0;
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    background-color: var(--info-color);
+    padding: 10px;
+
+}
+
+.content{
+    flex-grow: 1;
+
+}

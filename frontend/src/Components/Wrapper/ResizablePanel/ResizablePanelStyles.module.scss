@@ -1,0 +1,22 @@
+@import "../../../Styles/main.scss";
+
+.content{
+    @include flex-col;
+    align-items: center;
+    // position: relative;
+    // top: 10px;
+    width: 100%;
+    padding: 10px;
+    background-color: rgba(from var(--board-color) r g b / 0.8);
+    // @include scroll-y
+}
+
+.up{
+    clip-path: polygon(0% 0%, 100% 20px, 100% 100%, 0% 100%);
+    padding-top: 10px;
+}
+
+.bottom{
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% calc(100% - 20px));
+    padding-bottom: 10px;
+}

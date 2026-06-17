@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
-export default function useSessionStorage(key, initialValue, onLoaded) {
-    const [storedValue, setStoredValue] = useState(initialValue);
+export default function useSessionStorage<T>(key: string, initialValue: T, onLoaded: (val: T) => void) {
+    const [storedValue, setStoredValue] = useState<T>(initialValue);
   
     useEffect(() => {
         try {
@@ -27,7 +27,7 @@ export default function useSessionStorage(key, initialValue, onLoaded) {
         }
     }, [key, initialValue]);
     
-    const setValue = (value) => {
+    const setValue = (value: T | ((val: T) => T)) => {
         try {
             const valueToStore = value instanceof Function ? value(storedValue) : value;
             setStoredValue(valueToStore);
@@ -37,5 +37,5 @@ export default function useSessionStorage(key, initialValue, onLoaded) {
         }
     };
     
-    return [storedValue, setValue];
+    return [storedValue, setValue] as const;
 }

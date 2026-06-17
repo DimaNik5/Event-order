@@ -1,0 +1,9 @@
+@import "../../../Styles/main.scss";
+
+
+.container {
+    @include flex-col;
+    width: 100%;
+    height: 100%;
+
+}

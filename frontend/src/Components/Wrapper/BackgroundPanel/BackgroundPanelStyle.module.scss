@@ -1,0 +1,18 @@
+@import "../../../Styles/main.scss";
+
+.content{
+    @include flex-col;
+    align-items: center;
+    flex: 1;
+    
+    position: relative;
+    top: 10px;
+    width: 100%;
+    // max-height: calc(100% - 90px);
+    padding: 10px;
+    background-color: rgba(from var(--board-color) r g b / 0.8);
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 95%);
+    // @include scroll-y
+    overflow: hidden;
+    // min-height: 0; // КЛЮЧЕВОЕ: позволяет содержимому скроллиться
+}

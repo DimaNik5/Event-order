@@ -13,7 +13,7 @@ export function EmbeddedGroup(props: Props<gblt>){
     return(
         <div className={styles.content}>
             {Object.keys(props.content).map(key =>{
-                return <GroupButton key={key} content={props.content[key]} handleSetList={(setList: (prev: gblt) => gblt) => props.handleSelect(key, setList)}>{key}</GroupButton>
+                return <GroupButton key={key} content={props.content[key]} handleSetList={(newContent: gblt) => props.handleSelect(key, newContent)} unpresseble={props.unpresseble}>{key}</GroupButton>
             })}
         </div>
     );

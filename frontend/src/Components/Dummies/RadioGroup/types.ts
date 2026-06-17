@@ -1,6 +1,6 @@
 
 export interface Props{
-    handleSelect(name: String, content: any): void;
+    handleSelect(name: string, content: boolean): void;
     managerTrigger?: string;
     content: string[];
 }

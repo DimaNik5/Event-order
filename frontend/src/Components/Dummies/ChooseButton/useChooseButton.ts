@@ -27,6 +27,7 @@ export default function useChooseButton(props: Props){
                 setSelected(SelectedType.OFF);
             }
         }
+        else if(props.type === TypeButton.CHECKBOX && props.selected) setSelected(SelectedType.CHECKBOX_ON);
     }, []);
 
     useEffect(() => {

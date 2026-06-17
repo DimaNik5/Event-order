@@ -5,7 +5,7 @@ import { Props } from "./types";
 import styles from "./RadioGroupStyles.module.scss"
 
 /*
-    handleSelect(name: String, content: any): void;
+    handleSelect(name: string, content: boolean): void;
     managerTrigger?: string;
     content: string[];
 */

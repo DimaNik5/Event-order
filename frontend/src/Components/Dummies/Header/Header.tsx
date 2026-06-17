@@ -18,7 +18,7 @@ export default function Header(props: Props){
     return (
         <div className={styles.container}>
             <div className={styles.top}>
-                <div className={styles.lef}>
+                <div className={styles.left}>
                     {(props.licon && icons[props.licon]) &&
                         <button onClick={props.lhandleClick} >
                             {icons[props.licon]}

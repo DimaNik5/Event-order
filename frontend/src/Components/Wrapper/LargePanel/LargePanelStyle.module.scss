@@ -1,0 +1,13 @@
+@import "../../../Styles/main.scss";
+
+.content{
+    flex-grow: 1;
+    z-index: 1;
+    height: auto;
+    position: relative;
+    left: -10px;
+    bottom: -10px;
+    width: 100vw;
+    padding: 10px;
+    background-color: rgba(from var(--board-color) r g b / 0.8);
+}

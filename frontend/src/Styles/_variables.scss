@@ -1,9 +1,15 @@
 
 :root {
-    /* Светлая тема (по умолчанию) */
-    --info-color: #1f1a5d;
-    --board-color: #fff;
+    /* Костанты */
+    --info-color: #1f1a5d; /*Цвет информации на подложках*/
+    --board-color: #fff; /*Цвет подложки*/
+
+    --text-color-event: #fff;
+    --main-color-event: #b2c9e2;
+    --part-color-event: #1f1a5d;
+    --none-color-event: #727271;
     
+    /* Светлая тема (по умолчанию) */
     --primary-color: #b2c9e2;
     --accent-color: #1f1a5d;
     --text-primary: #1f1a5d;
@@ -19,8 +25,6 @@
   
   /* Темная тема */
 [data-theme="dark"] {
-    --info-color: #1f1a5d; /*Цвет информации на подложках*/
-    --board-color: #fff; /*Цвет подложки*/
     
     --primary-color: #1f1a5d; /*цвет элементов*/
     --accent-color: #fff; /*акцентный цвет на элементах*/

@@ -1,0 +1,26 @@
+@import '../../../Styles/main.scss';
+
+.container{
+    @include button-back;
+    height: 23px;
+    // width: auto;
+    padding: 0 12px;
+    margin-right: -5px;
+    clip-path: polygon(3px 0%, calc(100% - 5px) 0%, 100% 100%, 0% 100%);
+    background-color: rgba(from var(--board-color) r g b / 0.8);
+    color: var(--info-color);
+    font-size: medium;
+    z-index: 2;
+    
+    white-space: nowrap;
+    // overflow: hidden;
+    // text-overflow: ellipsis;
+    
+    // // Максимальная ширина для ограничения
+    max-width: 300px;
+}
+
+.selected{
+    z-index: 3;
+    background-color: rgba(from var(--board-color) r g b / 1.0);
+}

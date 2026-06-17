@@ -1,0 +1,29 @@
+@import "../../../Styles/main.scss";
+
+.container{
+    height: 100%;
+    width: 100%;
+}
+
+.grid_container{
+    display: grid;
+    justify-items: center;
+    align-items: end;
+    max-height: 100%;
+    min-height: 100%;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: auto repeat(6, 1fr);
+    grid-template-areas: var(--grid-areas);
+    
+    & > button{
+        outline: 2px solid var(--info-color);
+        outline-offset: -1px;
+        max-height: 100%;
+    }
+}
+
+.hollow_button{
+    @include button-back;
+    height: 100%;
+    width: 100%;
+}

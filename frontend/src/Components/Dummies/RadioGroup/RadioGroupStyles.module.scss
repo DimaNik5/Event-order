@@ -5,7 +5,7 @@
     // position: fixed;
     @include flex-col;
     @include scroll-y;
-    height: 100%;
+    height: auto;
     width: 100%;
     // padding: 10px;
     // background-color: rgba(from var(--primary-color) r g b / 0.8);

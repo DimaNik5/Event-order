@@ -1,0 +1,55 @@
+@import "../../../Styles/main.scss";
+
+.panel{
+    position: absolute;
+    top: 70px;
+    right: 10px;
+    height: 420px;
+    width: 280px;
+}
+
+.edit_panel{
+    position: absolute;
+    height: 180px;
+    width: 200px;
+    // padding-bottom: 20px; 
+    // transform: translate(-280px, 0)
+}
+
+.element{
+    &_type{
+        @include button-back;
+        justify-self: center;
+        height: 28px;
+        width: 28px;
+        margin:auto;
+        margin-right: 15px;
+    }
+
+    &_info{
+        @include flex-col;
+        flex-grow: 1;
+        margin-left: 10px;
+        margin-top: 3px;
+    }
+
+    &_name{
+        color: var(--text-primary);
+    }
+
+    &_role{
+        color: var(--text-secondary)
+    }
+
+    &_icon{
+        height: 35px;
+        width: 35px;
+        margin-top: 10px;
+
+    }
+}
+
+.space{
+    background-color: rgba($color: #000000, $alpha: 0);
+    height: 30px;
+}

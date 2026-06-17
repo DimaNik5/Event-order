@@ -1,0 +1,13 @@
+@import "../../../Styles/main.scss";
+
+.container{
+    @include button-back;
+    position: fixed;
+    background-color: var(--primary-color);
+    height: 60px;
+    width: 60px;
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    right: 20px;
+    bottom: 30px;
+    padding-top: 5px;
+}

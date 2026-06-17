@@ -4,6 +4,7 @@ export interface ListType<T> {
 }
 
 export interface Props<T>{
-    handleSelect(name: String, content: any): void;
+    handleSelect(name: String, content: T): void;
     content: ListType<T>;
+    unpresseble?: boolean;
 }

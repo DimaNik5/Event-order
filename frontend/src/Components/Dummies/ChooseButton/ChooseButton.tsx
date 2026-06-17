@@ -2,7 +2,7 @@ import styles from './ChooseButtonStyles.module.scss'
 
 import type {Props} from "./types"
 import useChooseButton from "./useChooseButton"
-import {SelectButton} from "@/Components/UI/SelectButton"
+import {SelectButton, SelectedType} from "@/Components/UI/SelectButton"
 
 /*
     type: TypeButton;
@@ -17,7 +17,7 @@ export function ChooseButton(props: Props){
     return (
         <div className={styles.container}>
             
-            <SelectButton onClick={click} selected={selected}/>
+            <SelectButton onClick={() => !props.unpresseble && click()} selected={selected}/>
             <div className={styles.content}>{state.name}</div>
         </div>
     );

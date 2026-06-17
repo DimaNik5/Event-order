@@ -8,4 +8,4 @@ export interface IconProps{
 export type IconName = 'calendar' | 'bell' | 'filter' | 'arrow' |
         'checkmark' | 'comment' | 'edit' | 'email' | 'exit' |
         'garbage' | 'logo' | 'password' | 'pen' | 'phone' | 'plus' |
-        'rhomb' | 'tg' | 'user';
+        'rhomb' | 'tg' | 'user' | 'lens' | "eye" | 'save' | 'points';

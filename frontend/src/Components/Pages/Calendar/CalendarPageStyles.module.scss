@@ -1,0 +1,21 @@
+@import "../../../Styles/main.scss";
+
+.panel{
+    position: absolute;
+    top: 70px;
+    right: 10px;
+    height: 150px;
+    width: 150px;
+}
+
+.panel_dp{
+    position: absolute;
+    top: 70px;
+    right: 10px;
+    height: 150px;
+    width: 150px;
+
+    & form {
+        @include flex-col;
+    }
+}
