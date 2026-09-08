@@ -4,7 +4,7 @@ import LargePanel from "@/Components/Wrapper/LargePanel";
 import CommentPanel from "@/Components/Wrapper/CommentPanel";
 
 export default function CommentPage(){
-    const [head, list] = useCommentPage();
+    const [head] = useCommentPage();
 
     return (
         <InfoLayout header={head}>

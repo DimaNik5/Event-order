@@ -1,87 +1,24 @@
-import { useState } from "react";
-import { Event } from "./types";
+import { useEffect, useState } from "react";
 import { IconElements, PenIcon, UserIcon } from "@/Assets/icons";
 import styles from './EventPageStyles.module.scss'
 import useNavigation from "@/Hooks/useNavigation";
+import { Event } from "@/Models/Common/Event";
+import useData from "@/Hooks/useData";
 
 
 export default function useListEvent(){
     const {goTo} = useNavigation(); 
+    const {getData} = useData()
+    
+    const mainList = getData.events().data as Event[];
 
-    let mainList = [
-        {
-            name: "Название",
-            date: "1.1.2026",
-            numbers: 10,
-            isPart: true,
-            isYour: false
-        },
-        {
-            name: "Название1",
-            date: "1.2.2026",
-            numbers: 1,
-            isPart: true,
-            isYour: true
-        },
-        {
-            name: "Название0",
-            date: "1.2.2026",
-            numbers: 1,
-            isPart: false,
-            isYour: false
-        },
-        {
-            name: "Название1",
-            date: "1.2.2026",
-            numbers: 1,
-            isPart: true,
-            isYour: false
-        },
-        {
-            name: "Название1",
-            date: "1.2.2026",
-            numbers: 1,
-            isPart: true,
-            isYour: true
-        },
-        {
-            name: "Название",
-            date: "1.1.2026",
-            numbers: 10,
-            isPart: true,
-            isYour: false
-        },
-        {
-            name: "Название1",
-            date: "1.2.2026",
-            numbers: 1,
-            isPart: true,
-            isYour: true
-        },
-        {
-            name: "Название0",
-            date: "1.2.2026",
-            numbers: 1,
-            isPart: false,
-            isYour: false
-        },
-        {
-            name: "Название1",
-            date: "1.2.2026",
-            numbers: 1,
-            isPart: true,
-            isYour: false
-        },
-        {
-            name: "Название1",
-            date: "1.2.2026",
-            numbers: 1,
-            isPart: true,
-            isYour: true
+    const [list, setList] = useState<Event[]>([]);
+
+    useEffect(() => {
+        if(mainList){
+            setList(mainList);
         }
-    ];
-
-    const [list, setList] = useState(mainList);
+    }, [mainList]);
 
     const updateList = (fil: string) =>{
         if(fil === "Все"){
@@ -100,7 +37,7 @@ export default function useListEvent(){
             <div>
                 <div className={styles.element_info}>
                     <div className={styles.element_name}>{value.name}</div>
-                    <div className={styles.element_some_info}>{value.date}</div>
+                    <div className={styles.element_some_info}>{new Date(value.date).toLocaleDateString('ru-RU')}</div>
                     <div className={styles.element_some_info}>Участников: {value.numbers}</div>
                 </div>
                 <div className={styles.element_type}>
@@ -114,7 +51,7 @@ export default function useListEvent(){
     }
 
     const clikOnElement = (value: Event) => {
-        goTo("1")
+        goTo(`${value.id}`)
     }
 
     return [list, createContent, updateList, clikOnElement] as const;

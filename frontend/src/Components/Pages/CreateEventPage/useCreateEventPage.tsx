@@ -1,12 +1,25 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useNavigation from "@/Hooks/useNavigation";
 import { Header } from "@/Components/Dummies/Header";
 import { IconElements } from "@/Assets/icons";
 import DecoratedInput from "@/Components/Dummies/DecoratedInput";
 import styles from './CreateEventPageStyles.module.scss'
+import useData from "@/Hooks/useData";
+import { User } from "@/Models/Common/User";
+import DecorateButton from "@/Components/UI/DecorateButton";
+import { Roles } from "@/Constants/Types/RoleType";
 
+function convertToISOUTC(dateStr: string): string {
+    const [day, month, year] = dateStr.split('.').map(Number);
+    
+    // Создаем дату в UTC
+    const date = new Date(Date.UTC(year, month - 1, day, 0, 0, 0, 0));
+    
+    return date.toISOString();
+  }
 
+  
 function parseDateFromMask(dateStr: string): Date | null {
     // Проверяем формат ДД.ММ.ГГГГ
     const match = dateStr.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
@@ -33,7 +46,22 @@ function parseDateFromMask(dateStr: string): Date | null {
 
 
 export default function useCreateEventPage(){
+    const { getData, setData } = useData();
+    const createEvent = setData.createEvent;
     const {goBack} = useNavigation();
+
+    const me = getData.me().data as User;
+
+    useEffect(() => {
+        if(me){
+            if(me.role_name === Roles.NONE || me.role_name === Roles.MINISTER) goBack();
+        }
+    }, [me]);
+
+    useEffect(() => {
+        if(createEvent.isSuccess) goBack();
+    }, [createEvent.isSuccess]);
+
     const [getDate, setGetDate] = useState(false);
 
     const [content, setContent] = useState({"Название": '', "Дата": ''});
@@ -62,6 +90,11 @@ export default function useCreateEventPage(){
             <DecoratedInput content={content.Дата} name="Дата" callback={setCon} icon={calendar} maxLength={10}/>
         </div>
 
-    return [head, getDate, inputContent, setNewDate] as const;
+    const create = () => {
+        createEvent.mutate({name: content.Название, date: convertToISOUTC(content.Дата)})
+    }
+    const createBtn = <DecorateButton onClick={create}>Создать</DecorateButton>
+
+    return [head, getDate, inputContent, setNewDate, createBtn] as const;
 
 }

@@ -2,20 +2,42 @@
 import useNavigation from "@/Hooks/useNavigation";
 import styles from './EditPagesOfEventPageStyles.module.scss'
 import { Header } from "@/Components/Dummies/Header";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import useData from "@/Hooks/useData";
+import { useParams } from "react-router-dom";
+import { PagesOfEvent } from "@/Models/Common/PagesOfEvent";
+import { Page } from "@/Models/Common/Page";
+import { Event } from "@/Models/Common/Event";
 
 export default function useEditPagesOfEventPage(){
     const {goBack, goTo} = useNavigation();
+    const {getData, setId} = useData();
+    const { id } = useParams<{ id: string }>();
+    const numericId = id ? parseInt(id, 10) : undefined;
+    
+    useEffect(() => {
+        if (numericId && numericId > 0) {
+            setId(numericId);
+        } else {
+            goBack();
+        }
+    }, [numericId]);
 
-    const mainlist: string[] = ["Описание", "стр", "чтото"]
+    const pagesInfo = getData.pages().data as Page[];
 
-    const [list, setList] = useState(mainlist);
+    const [pages, setPages] = useState<Page[]>([]);
 
-    const createContent = (value: string) => {
+    useEffect(() => {
+        if(pagesInfo){
+            setPages(pagesInfo);
+        }
+    }, [pagesInfo]);
+
+    const createContent = (value: Page) => {
         return (
             <div>
-                <div className={styles.element_info} onClick={() => goTo('edit/1')}>
-                    <div className={styles.element_name}>{value}</div>
+                <div className={styles.element_info} onClick={() => goTo(`edit/${value.id}`)}>
+                    <div className={styles.element_name}>{value.name}</div>
                 </div>
             </div>
         );
@@ -24,8 +46,8 @@ export default function useEditPagesOfEventPage(){
     const head = <Header licon="arrow" lhandleClick={goBack} isBotton={true}>Страницы</Header>
 
     const handleaddPage = () => {
-        goTo('edit/1');
+        goTo('edit/-1');
     }
 
-    return [head, list, createContent, handleaddPage] as const;
+    return [head, pages, createContent, handleaddPage] as const;
 }

@@ -5,6 +5,6 @@ export interface Props{
     name?: string,
     content: string,
     time: string,
-    isChanged: boolean,
+    isChanged?: string,
     isMine: boolean
 }

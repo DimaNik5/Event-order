@@ -11,7 +11,7 @@ import useNavigation from '@/Hooks/useNavigation';
 export default function UserListPage(){
     const {goTo} = useNavigation();
 
-    const [head, fcontent, editContent, list, createContent] = useUserList();
+    const [head, fcontent, editContent, list, createContent, addF] = useUserList();
 
     return (
         <MainLayout header={head}>
@@ -21,7 +21,7 @@ export default function UserListPage(){
             </div>
             <BackgroundPanel>
                 <List list={list} content={createContent}/>
-                {true &&
+                {addF &&
                     <DecorateButton onClick={() => goTo('application')}>
                         Добавить
                     </DecorateButton>

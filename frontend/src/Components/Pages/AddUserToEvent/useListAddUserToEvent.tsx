@@ -1,121 +1,98 @@
-import { useRef, useState } from "react";
-import { EditIcon, IconElements, UserIcon } from "@/Assets/icons";
-import { Roles, User } from "./types";
-import { RadioGroup } from '@/Components/Dummies/RadioGroup';
-import { OverflowPanel } from '@/Components/Wrapper/OverflowPanel';
+import { useMemo, useState } from "react";
+import { PlusIcon, UserIcon } from "@/Assets/icons";
 import styles from './AddUserToEventStyles.module.scss'
-import DecorateButton from '@/Components/UI/DecorateButton';
 import { FilterType } from "@/Hooks/useGroupFilter";
-import { SelectButton, SelectedType } from "@/Components/UI/SelectButton";
+import { User } from "@/Models/Common/User";
+import useData from "@/Hooks/useData";
+import { useParams } from "react-router-dom";
+import useNavigation from "@/Hooks/useNavigation";
+import { Specialisation } from "@/Models/Common/Specialisation";
 
 export default function useListAddUserToEvent(){
+    const {goBack} = useNavigation()
+    const {getData, setId, setData} = useData();
+    const users = getData.users().data as User[];
 
-    const mainList: User[] = [
-        {
-            name: "User1",
-            role: Roles.MINISTER,
-            spec: {
-                "Музыканты": [
-                    "Поющие",
-                    "Играющие",
-                ],
-                "Group": [
-                    "el2"
-                ],
-            },
-            add: 0
-        },
-        {
-            name: "User2",
-            role: Roles.LEADER,
-            spec: {
-                "Музыканты": [
-                    "Поющие",
-                    "Играющие",
-                ],
-                "Group": [
-                    "el1",
-                    "el2"
-                ],
-                "Some": [
-                    "s1",
-                    "s2"
-                ]
-            },
-            add: 0
-        },
-        {
-            name: "User3",
-            role: Roles.ADMIN,
-            spec: {
-                "Музыканты": [
-                    "Поющие"
-                ]
-            },
-            add: 0
-        },
-        {
-            name: "User4",
-            role: Roles.SYSADMIN,
-            spec: {
-                "Group": [
-                    "el1"
-                ]
-            },
-            add: 0
-        },
-    ];
+    const { id } = useParams<{ id: string }>();
+    const numericId = id ? parseInt(id, 10) : undefined;
+    if(numericId === undefined) goBack();
+
+    setId(numericId ?? -1)
+    const usersOfEvent = getData.usersOfEvent().data as number[];
+
+    const mainList = useMemo(() => {
+        return users.filter(u => !usersOfEvent.some(ue => ue === u.id))
+    }, [users, usersOfEvent]);
 
     const [list, setList] = useState<User[]>(mainList);
 
-    const roles = [Roles.MINISTER, Roles.LEADER, Roles.ADMIN];
-    const [curRole, setRole] = useState<string>(roles[0]);
-    const editPanel = useRef<HTMLDivElement>(null);
-    const wrapperEditPanel = useRef<HTMLDivElement>(null);
+    // const roles = [Roles.MINISTER, Roles.LEADER, Roles.ADMIN];
+    // const [curRole, setRole] = useState<string>(roles[0]);
+    // const editPanel = useRef<HTMLDivElement>(null);
+    // const wrapperEditPanel = useRef<HTMLDivElement>(null);
 
     const updateList = (fil: FilterType) => {
         // Всегда начинаем с полного списка
         let filteredList = [...mainList];
         let result: User[] = [];
         let sel = 0;
+    
+        const specialisation = getData.spec().data as Specialisation[];
+        
+        // Создаем карту для быстрого поиска специализаций по id
+        const specMap = new Map<number, Specialisation>();
+        specialisation.forEach(spec => {
+            specMap.set(spec.id, spec);
+        });
         
         // Применяем фильтры последовательно
         Object.entries(fil).forEach(([key, value]) => {
             if (key === "Роли") {
-                // Фильтрация по ролям: оставляем только те роли, которые активны
+                // Фильтрация по ролям
                 const activeRoles = Object.entries(value)
                     .filter(([_, isActive]) => isActive)
                     .map(([role]) => role);
                 
-                // Если есть активные роли, фильтруем по ним
                 if (activeRoles.length > 0) {
                     filteredList = filteredList.filter(user => 
-                        activeRoles.includes(user.role)
+                        activeRoles.includes(user.role_name)
                     );
                 }
-                // Если нет активных ролей - ничего не делаем (оставляем всех)
-                
             } else {
                 // Фильтрация по специализациям
-                // Собираем все активные специализации
                 const activeSpecs = Object.entries(value)
                     .filter(([_, isActive]) => isActive === true)
                     .map(([spec]) => spec);
-
+    
                 sel += activeSpecs.length;
                 
-                // Если есть активные специализации, фильтруем
                 if (activeSpecs.length > 0) {
+                    const activeSpecsSet = new Set(activeSpecs);
+                    
                     filteredList.forEach(user => {
-                        // Пользователь подходит, если у него есть хотя бы одна активная специализация
-                        if( activeSpecs.some((spec) => 
-                            user.spec[key] && 
-                            user.spec[key].includes(spec))){
-                            if(!result.some(u => u.name === user.name)) result.push(user);
+                        // Проверяем, есть ли у пользователя массив специализаций
+                        if (!user.spec || user.spec.length === 0) return;
+                        
+                        // Проверяем каждую специализацию пользователя
+                        const hasMatchingSpec = user.spec.some(specId => {
+                            // Получаем специализацию по id
+                            const userSpec = specMap.get(specId);
+                            
+                            // Проверяем, соответствует ли специализация фильтру
+                            if (!userSpec || userSpec.name !== key) return false;
+                            
+                            // Проверяем, есть ли активные spec внутри специализации
+                            return userSpec.spec?.some(s => 
+                                activeSpecsSet.has(s.name)
+                            ) ?? false;
+                        });
+                        
+                        // Если пользователь подходит, добавляем в результат
+                        if (hasMatchingSpec && !result.some(u => u.name === user.name)) {
+                            result.push(user);
                         }
-                    })
+                    });
                 }
-                // Если нет активных специализаций - ничего не делаем
             }
         });
         
@@ -123,14 +100,7 @@ export default function useListAddUserToEvent(){
     };
 
     const addUser = (value: User) => {
-        setList(prevUsers => 
-            prevUsers.map(user => 
-              user === value 
-                ? { ...user, add: value.add === SelectedType.OFF ? SelectedType.CHECKBOX_ON : SelectedType.OFF }
-                : user
-            )
-          );
-
+        setData.addUserToEvent.mutate({id_event: numericId, id_user: value.id});
     }
 
     const createContent = (value: User) => {
@@ -143,10 +113,10 @@ export default function useListAddUserToEvent(){
                 </div>
                 <div className={styles.element_info}>
                     <div className={styles.element_name}>{value.name}</div>
-                    <div className={styles.element_role}>{value.role}</div>
+                    <div className={styles.element_role}>{value.role_name}</div>
                 </div>
-                <div className={styles.element_type}>
-                    <SelectButton selected={value.add} onClick={() => addUser(value)}/>
+                <div className={styles.element_type} onClick={() => addUser(value)}>
+                    <PlusIcon />
                 </div>
             </div>
         );

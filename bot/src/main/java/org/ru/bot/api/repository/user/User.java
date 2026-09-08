@@ -2,7 +2,6 @@ package org.ru.bot.api.repository.user;
 
 
 import jakarta.persistence.*;
-import org.springframework.data.annotation.Id;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,7 +33,7 @@ public class User implements UserDetails {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.password = password;
+        setPassword(password);
         this.number = number;
         this.role = role;
     }
@@ -79,6 +78,16 @@ public class User implements UserDetails {
 
     public String getRole() {
         return role;
+    }
+
+    public String getNameRole() {
+        return switch (role) {
+            case "SUPER_ADMIN" -> "СисАдминистратор";
+            case "ADMIN" -> "Администратор";
+            case "LEADER" -> "Лидер";
+            case "MINISTER" -> "Служитель";
+            default -> "";
+        };
     }
 
     public void setRole(String role) {

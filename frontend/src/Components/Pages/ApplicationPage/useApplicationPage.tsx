@@ -1,52 +1,44 @@
 
 import useNavigation from "@/Hooks/useNavigation";
-import { ApplicationUser } from "./types";
 import styles from './ApplicationPageStyles.module.scss'
 import { GarbageIcon, IconElements, PlusIcon } from "@/Assets/icons";
 import { Header } from "@/Components/Dummies/Header";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { User } from "@/Models/Common/User";
+import useData from "@/Hooks/useData";
+import { Roles } from "@/Constants/Types/RoleType";
 
 export default function useApplicationPage(){
 
-    
+    const { getData, setData } = useData();
     const {goBack} = useNavigation();
 
-    const mainlist: ApplicationUser[] = [
-        {
-            name: "User1",
-            contact: "email@mail.ru"
-        },
-        {
-            name: "User2",
-            contact: "email1@mail.ru"
-        },
-        {
-            name: "User3",
-            contact: "email2@mail.ru"
-        }
-    ]
+    useEffect(() => {
+        const me = getData.me().data as User;
+        if(me.role_name !== Roles.ADMIN && me.role_name !== Roles.SYSADMIN) goBack();
+    }, []);
 
-    const [list, setList] = useState(mainlist);
+    const list = getData.unusers().data as User[];
 
-    const addUser = (email: string) => {
-        setList(list.filter(u => u.contact !== email));
+    const addUser = (id: number) => {
+        setData.changeRoleUser.mutate({id: id, role: Roles.MINISTER});
     }
 
-    const delUser = (email: string) => {
-        setList(list.filter(u => u.contact !== email));
+    const delUser = (id: number) => {
+        setData.deleteUser.mutate(id);
     }
 
-    const createContent = (value: ApplicationUser) => {
+    const createContent = (value: User) => {
         return (
             <div>
                 <div className={styles.element_info}>
                     <div className={styles.element_name}>{value.name}</div>
-                    <div className={styles.element_contact}>{value.contact}</div>
+                    <div className={styles.element_contact}>{value.email}</div>
                 </div>
-                <button className={styles.element_icon} onClick={() => addUser(value.contact)}>
+                <button className={styles.element_icon} onClick={() => addUser(value.id)}>
                     <PlusIcon height="100%" width="100%" color="var(--accent-color)"/>
                 </button>
-                <button className={styles.element_icon} onClick={() => delUser(value.contact)}>
+                <button className={styles.element_icon} onClick={() => delUser(value.id)}>
                     <GarbageIcon height="100%" width="100%" color="var(--accent-color)"/>
                 </button>
             </div>

@@ -2,7 +2,6 @@ package org.ru.bot.api.repository.event;
 
 
 import jakarta.persistence.*;
-import org.springframework.data.annotation.Id;
 
 import java.time.Instant;
 

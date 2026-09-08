@@ -1,4 +1,5 @@
-import { Event } from "@/Components/Pages/Calendar/types";
+import { Event } from "@/Models/Common/Event";
+
 
 export interface Props{
     date: Date;

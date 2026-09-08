@@ -6,12 +6,3 @@ export enum Roles{
     ADMIN = 'Администратор',
     SYSADMIN = 'СисАдминистратор'
 }
-
-export interface User{
-    name: string,
-    role: Roles,
-    spec: Spec
-}
-
-
-export type Spec = Record<string, string[]>;

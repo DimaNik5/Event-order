@@ -8,14 +8,14 @@ import BackgroundPanel from "@/Components/Wrapper/BackgroundPanel";
 
 
 export default function EditPage(){
-    const [head, inputContent] = useEditPage()
+    const [head, inputContent, content, setContent] = useEditPage()
 
     return(
         <InfoLayput header={head}>
             <BackgroundPanel>
                 {inputContent}
                 <div className={styles.container}>
-                    <MDEdit init=""/>
+                    <MDEdit content={content} setContent={setContent}/>
                 </div>
             </BackgroundPanel>
             <div className={styles.space}></div>

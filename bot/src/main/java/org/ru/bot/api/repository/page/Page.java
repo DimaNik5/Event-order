@@ -1,7 +1,6 @@
 package org.ru.bot.api.repository.page;
 
 import jakarta.persistence.*;
-import org.springframework.data.annotation.Id;
 
 @Entity
 @Table(name = "page")

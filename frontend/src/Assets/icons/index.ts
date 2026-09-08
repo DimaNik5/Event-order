@@ -27,4 +27,6 @@ export {LensIcon} from "./lens"
 export {EyeIcon} from "./eye"
 export {SaveIcon} from "./save"
 export {PointsIcon} from "./points"
+export {SunIcon} from "./sun"
+export {PhotoIcon} from "./photo"
 

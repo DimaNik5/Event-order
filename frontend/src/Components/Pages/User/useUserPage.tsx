@@ -7,13 +7,22 @@ import { EmailIcon, PhoneIcon, UserIcon } from '@/Assets/icons';
 import DecoratedText from '@/Components/Dummies/DecoratedText';
 import DecorateButton from '@/Components/UI/DecorateButton';
 import { EditIcon } from '@/Assets/icons';
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import useTheme from '@/Hooks/useTheme';
+import useData from '@/Hooks/useData';
+import { User } from '@/Models/Common/User';
 
 
 export default function useUserPage(){
-    
+    const {getData} = useData();
     const { id } = useParams<{ id: string }>();
+    const numericId = id ? parseInt(id, 10) : undefined;
+
+    const me = getData.me().data as User;
+    const users = getData.users().data as User[];
+    const user = useMemo(() => numericId === undefined ? me
+            : users.find(u => u.id === numericId), [me, users]);
+
     const {changeTheme} = useTheme();
 
     const panelRef = useRef<HTMLDivElement>(null);
@@ -59,15 +68,15 @@ export default function useUserPage(){
             </div>
         </div>
         <div className={styles.name}>
-            <div>Name</div>
-            <div>Роль</div>
+            <div>{user?.name}</div>
+            <div>{user?.role_name}</div>
         </div>
     </div>
 
     const content = <div className={styles.container}><ResizablePanel>
-            <DecoratedText content='Почта'
+            <DecoratedText content={user ? user.email : 'Почта'}
                 icon={<EmailIcon height="90%" width="90%" color='var(--info-color)'/>}/>
-            <DecoratedText content='Телефон'
+            <DecoratedText content={user ? user.number : 'Телефон'}
                 icon={<PhoneIcon height="100%" width="100%" color='var(--info-color)'/>}/>
             <DecorateButton onClick={() => goTo('spec')}>Специальности</DecorateButton>
         </ResizablePanel>

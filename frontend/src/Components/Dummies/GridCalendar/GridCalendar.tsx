@@ -1,8 +1,8 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import styles from './GridCalendarStyles.module.scss'
 import { Props } from './types';
-import { Event } from '@/Components/Pages/Calendar/types';
 import DayComponent from './DayComponent';
+import { Event } from '@/Models/Common/Event';
 
 export default function GridCalendar(props: Props){
     const days = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
@@ -75,7 +75,9 @@ export default function GridCalendar(props: Props){
     }, [props.date]);
 
     useEffect(() => {
-        setEvent(props.events.filter(e => e.date.getMonth() === props.date.getMonth()));
+        if(props.events){
+            setEvent(props.events.filter(e => Number(new Date(e.date).getMonth()) + 1 === Number(props.date.getMonth())));
+        }
     }, [props.events, props.date]);
 
     return (
@@ -90,10 +92,11 @@ export default function GridCalendar(props: Props){
                 {Array.from({ length: calcCountDay() }).map((_, index) => {
                     let cont: Record<string, number> = {};
                     event.forEach(e => {
-                        if(e.date.getFullYear() === props.date.getFullYear() &&
-                            e.date.getMonth() === props.date.getMonth() &&
-                            e.date.getDate() === index + 1) {
-                                cont[e.name] = e.partition;
+                        const d = new Date(e.date);
+                        if(d.getFullYear() === props.date.getFullYear() &&
+                            d.getMonth() + 1 === props.date.getMonth() &&
+                            d.getDate() === index + 1) {
+                                cont[e.name] = Number(e.isPart) + Number(e.isYour);
                         }
                     })
                     return <DayComponent day={index + 1} content={cont} handleClick={(d: string) => props.handleClick ? props.handleClick(d) : {}}/>

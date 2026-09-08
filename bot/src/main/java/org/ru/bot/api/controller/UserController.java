@@ -4,11 +4,14 @@ package org.ru.bot.api.controller;
 import org.ru.bot.api.dto.request.RefreshRequest;
 import org.ru.bot.api.dto.request.UserIn;
 import org.ru.bot.api.dto.responce.JwtResponse;
+import org.ru.bot.api.dto.responce.UserInfo;
+import org.ru.bot.api.repository.user.User;
 import org.ru.bot.api.service.UserService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.ru.bot.token.JwtTokenUtil;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Контроллер для работы с пользователями системы.
@@ -19,9 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService userService;
+    private final JwtTokenUtil jwtTokenUtil;
 
-    public UserController(UserService findUserService) {
+    public UserController(UserService findUserService, JwtTokenUtil jwtTokenUtil) {
         this.userService = findUserService;
+        this.jwtTokenUtil = jwtTokenUtil;
     }
 
 
@@ -47,6 +52,16 @@ public class UserController {
     @PostMapping(path = "create")
     public JwtResponse create(@RequestBody UserIn user){
         return userService.create(user);
+    }
+
+    @GetMapping(path = "me")
+    public UserInfo meInfo(){
+        return userService.me();
+    }
+
+    @GetMapping(path = "all")
+    public List<UserInfo> users(){
+        return userService.users();
     }
 
     /**

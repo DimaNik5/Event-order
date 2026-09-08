@@ -19,8 +19,9 @@ export default function CommentBlock(props: Props){
                 {
                     props.comments.map((com, key) => {
                         count++;
-                        return <Comment id_com={com.id} name={count === 1 ? com.author : undefined}
-                                        content={com.content} time={com.time} isChanged={com.isChanged}
+                        return <Comment id_com={com.id} name={count === 1 ? props.author : undefined}
+                                        content={com.content} time={new Date(com.created_time).toString()}
+                                        isChanged={new Date(com.updated_time).toString()}
                                         isMine={props.isMine} onClick={(id: number) => alert(id)}/>
                     })
                 }

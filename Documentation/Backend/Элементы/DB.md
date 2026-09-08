@@ -9,7 +9,6 @@ erDiagram
     users {
         bigint id
         string name
-        bigint tg_id
         string email
         string password
         string number
@@ -79,7 +78,6 @@ erDiagram
     user_role_view {
         bigint id
         string name
-        bigint tg_id
         string email
         string password
         string number

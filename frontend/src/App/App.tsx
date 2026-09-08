@@ -18,12 +18,16 @@ import UsersOfEventPage from '@/Components/Pages/UsersOfEventPage';
 import Background from '@/Components/UI/Background';
 import useTheme from '@/Hooks/useTheme';
 import { BrowserRouter, Routes, Route, Link, Router } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+const queryClient = new QueryClient();
 
 // npm install react-router-dom
 // npm install sass
 // npm install @craco/craco --save-dev
 // npm install react-markdown
-
+// npm install @tanstack/react-query
+// npm install axios
 
 
 export default function App() {
@@ -32,33 +36,35 @@ export default function App() {
 
   return (
     <ThemeContextProvider>
-      <BrowserRouter>
-        <Background>
-            <Routes>
-              <Route path="/" element={<SignPage />} />
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <Background>
+              <Routes>
+                <Route path="/" element={<SignPage />} /> {/* + */}
 
-              <Route path='/event' element={<EventPage />}/>
-              <Route path='/event/:id' element={<EventContentPage />}/>
-              <Route path='/event/:id/edit' element={<EditEventPage />}/>
-              <Route path='/event/:id/edit/pages' element={<EditPagesOfEventPage />}/>
-              <Route path='/event/:id/edit/pages/edit/:id_page' element={<EditPage />}/>
-              <Route path='/event/:id/users' element={<UsersOfEventPage />}/>
-              <Route path='/event/:id/users/add' element={<AddUserToEvent />}/>
-              <Route path='/event/:id/comment' element={<CommentPage />}/> 
-              <Route path='/event/calendar' element={<CalendarPage />}/>
-              <Route path='/event/create' element={<CreateEventPage />}/>
+                <Route path='/event' element={<EventPage />}/> {/* + */}
+                <Route path='/event/:id' element={<EventContentPage />}/> {/* + */}
+                <Route path='/event/:id/edit' element={<EditEventPage />}/> {/* + */}
+                <Route path='/event/:id/edit/pages' element={<EditPagesOfEventPage />}/> {/* + */}
+                <Route path='/event/:id/edit/pages/edit/:id_page' element={<EditPage />}/> {/* + */}
+                <Route path='/event/:id/users' element={<UsersOfEventPage />}/> {/* + */}
+                <Route path='/event/:id/users/add' element={<AddUserToEvent />}/> {/* + */}
+                <Route path='/event/:id/comment' element={<CommentPage />}/> {/* + */}
+                <Route path='/event/calendar' element={<CalendarPage />}/> {/* + */}
+                <Route path='/event/create' element={<CreateEventPage />}/> {/* + */}
 
-              <Route path="/user" element={<UserPage />}/>
-              <Route path="/user/edit" element={<EditUserPage />}/>
-              <Route path="/user/spec" element={<SpecPage />}/>
-              <Route path="/user/:id" element={<UserPage />}/>
-              <Route path="/user/:id/spec" element={<SpecPage />}/>
+                <Route path="/user" element={<UserPage />}/> {/* + */}
+                <Route path="/user/edit" element={<EditUserPage />}/> {/* + */}
+                <Route path="/user/spec" element={<SpecPage />}/> {/* + */}
+                <Route path="/user/:id" element={<UserPage />}/> {/* + */}
+                <Route path="/user/:id/spec" element={<SpecPage />}/> {/* + */}
 
-              <Route path="/users" element={<UserListPage />}/>
-              <Route path="/users/application" element={<ApplicationPage />}/>
-            </Routes>
-        </Background>
-      </BrowserRouter>
+                <Route path="/users" element={<UserListPage />}/> {/* + */}
+                <Route path="/users/application" element={<ApplicationPage />}/> {/* + */}
+              </Routes>
+          </Background>
+        </BrowserRouter>
+      </QueryClientProvider>
     </ThemeContextProvider>
   );
 }

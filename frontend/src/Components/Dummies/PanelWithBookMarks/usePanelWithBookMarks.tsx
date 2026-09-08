@@ -13,7 +13,7 @@ export default function usePanelWithBookMarks(props: Props){
 
         props.pages.forEach(p => {
             m.push(p.name);
-            c.push(p.content);
+            c.push(p.description);
         });
 
         setMarkbooks(m);

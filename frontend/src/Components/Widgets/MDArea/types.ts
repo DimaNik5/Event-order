@@ -5,5 +5,6 @@ export interface PropsArea{
 
 
 export interface PropsEdit{
-    init: string
+    content: string,
+    setContent: (content: string) => void
 }

@@ -6,10 +6,10 @@ import org.springframework.http.HttpStatus;
 /**
  * Исключение, возникающее при попытке обновления JWT токена с использованием
  * недействительного или отсутствующего refresh токена.
- * Возвращает HTTP статус 404 Not Found.
+ * Возвращает HTTP статус 401 UNAUTHORIZED.
  */
 public class NotRefreshTokenException extends AbstractException {
     public NotRefreshTokenException(){
-        super(HttpStatus.NOT_FOUND, "Данного refresh токена нет, или истекло время его действия");
+        super(HttpStatus.UNAUTHORIZED, "Данного refresh токена нет, или истекло время его действия");
     }
 }

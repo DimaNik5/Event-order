@@ -6,7 +6,7 @@ import { IconElements } from "@/Assets/icons";
 
 
 export default function MDEdit(props: PropsEdit){
-    const [content, setContent, mode, setMode] = useMDEdit(props.init)
+    const [mode, setMode] = useMDEdit()
 
     return(
         <div className={styles.cont_edit}>
@@ -20,15 +20,15 @@ export default function MDEdit(props: PropsEdit){
             </button>
             {!mode &&
                 <textarea
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
+                    value={props.content}
+                    onChange={(e) => props.setContent(e.target.value)}
                     placeholder="Введите Markdown..."
                     autoFocus
                 />
             }
             {mode &&
                 <div className={styles.cont}>
-                    <Markdown>{content}</Markdown>
+                    <Markdown>{props.content}</Markdown>
                 </div>
             }
         </div>

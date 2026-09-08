@@ -8,7 +8,7 @@ export default function Comment(props: Props){
                 <div className={styles.name}>{props.name}</div>
             }
             <div className={`${props.isMine ? `${styles.content_mine}` : `${styles.content}`}`}>{props.content}</div>
-            <div className={styles.time}>{props.isChanged ? "изменно": ""} {props.time}</div>
+            <div className={styles.time}>{props.isChanged ? "изменно": ""} {props.isChanged ? props.isChanged : props.time}</div>
         </button>
     );
 }

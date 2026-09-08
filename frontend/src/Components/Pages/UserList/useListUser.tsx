@@ -1,67 +1,31 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { EditIcon, IconElements, UserIcon } from "@/Assets/icons";
-import { Roles, User } from "./types";
 import { RadioGroup } from '@/Components/Dummies/RadioGroup';
 import { OverflowPanel } from '@/Components/Wrapper/OverflowPanel';
 import styles from './UserListStyles.module.scss'
 import DecorateButton from '@/Components/UI/DecorateButton';
 import { FilterType } from "@/Hooks/useGroupFilter";
+import { User } from "@/Models/Common/User";
+import { Roles } from "@/Constants/Types/RoleType";
+import useData from "@/Hooks/useData";
+import { Specialisation } from "@/Models/Common/Specialisation";
 
 export default function useListUser(){
+    const {getData, setData} = useData();
+    
+    const me = getData.me(). data as User;
+    const specialisation = getData.spec().data as Specialisation[];
+    const [mainList, setMainList] = useState<User[]>([]);
 
-    const mainList: User[] = [
-        {
-            name: "User1",
-            role: Roles.MINISTER,
-            spec: {
-                "Музыканты": [
-                    "Поющие",
-                    "Играющие",
-                ],
-                "Group": [
-                    "el2"
-                ],
-            }
-        },
-        {
-            name: "User2",
-            role: Roles.LEADER,
-            spec: {
-                "Музыканты": [
-                    "Поющие",
-                    "Играющие",
-                ],
-                "Group": [
-                    "el1",
-                    "el2"
-                ],
-                "Some": [
-                    "s1",
-                    "s2"
-                ]
-            }
-        },
-        {
-            name: "User3",
-            role: Roles.ADMIN,
-            spec: {
-                "Музыканты": [
-                    "Поющие"
-                ]
-            }
-        },
-        {
-            name: "User4",
-            role: Roles.SYSADMIN,
-            spec: {
-                "Group": [
-                    "el1"
-                ]
-            }
-        },
-    ];
+    const [list, setList] = useState<User[]>([]);
+    const users = getData.users().data as User[];
 
-    const [list, setList] = useState<User[]>(mainList);
+    useEffect(() => {
+        if(users) {
+            setMainList(users);
+            setList(users);
+        }
+    }, [users]);
 
     const roles = [Roles.MINISTER, Roles.LEADER, Roles.ADMIN];
     const [curRole, setRole] = useState<string>(roles[0]);
@@ -71,7 +35,8 @@ export default function useListUser(){
     const wrapperEditPanel = useRef<HTMLDivElement>(null);
 
     function editRole(name: string, content: boolean){
-        if(content){
+        if(content && startUser.current){
+            setData.changeRoleUser.mutate({id: startUser.current.id, name});
             setRole(name);
         }
     }
@@ -80,8 +45,8 @@ export default function useListUser(){
         if(editPanel.current){
             if(startRole.current !== curRole){
                 setList(prevUsers => 
-                    prevUsers.map(user => 
-                        user === startUser.current ? { ...user, role: curRole as Roles} : user
+                    prevUsers?.map(user => 
+                        user === startUser.current ? { ...user, role_name: curRole as Roles} : user
                     )
                 );
             }
@@ -91,7 +56,7 @@ export default function useListUser(){
     
     function openEditPanel(user: User, event: React.MouseEvent<HTMLButtonElement>){
         startUser.current = user;
-        startRole.current = user.role;
+        startRole.current = user.role_name;
         setRole(startRole.current);
         const rect = event.currentTarget.getBoundingClientRect();
         if(editPanel.current){
@@ -106,7 +71,7 @@ export default function useListUser(){
 
     function deleteUser(){
         if(startUser.current){
-            alert("Удаление " + startUser.current.name)
+            setData.deleteUser.mutate(startUser.current.id)
         }
     }
 
@@ -116,46 +81,61 @@ export default function useListUser(){
         let result: User[] = [];
         let sel = 0;
         
+        // Создаем карту для быстрого поиска специализаций по id
+        const specMap = new Map<number, Specialisation>();
+        specialisation?.forEach(spec => {
+            specMap.set(spec.id, spec);
+        });
+        
         // Применяем фильтры последовательно
         Object.entries(fil).forEach(([key, value]) => {
             if (key === "Роли") {
-                // Фильтрация по ролям: оставляем только те роли, которые активны
+                // Фильтрация по ролям
                 const activeRoles = Object.entries(value)
                     .filter(([_, isActive]) => isActive)
                     .map(([role]) => role);
-                
-                // Если есть активные роли, фильтруем по ним
                 if (activeRoles.length > 0) {
                     filteredList = filteredList.filter(user => 
-                        activeRoles.includes(user.role)
+                        activeRoles.includes(user.role_name)
                     );
                 }
-                // Если нет активных ролей - ничего не делаем (оставляем всех)
-                
             } else {
                 // Фильтрация по специализациям
-                // Собираем все активные специализации
                 const activeSpecs = Object.entries(value)
                     .filter(([_, isActive]) => isActive === true)
                     .map(([spec]) => spec);
-
+    
                 sel += activeSpecs.length;
                 
-                // Если есть активные специализации, фильтруем
                 if (activeSpecs.length > 0) {
+                    const activeSpecsSet = new Set(activeSpecs);
+                    
                     filteredList.forEach(user => {
-                        // Пользователь подходит, если у него есть хотя бы одна активная специализация
-                        if( activeSpecs.some((spec) => 
-                            user.spec[key] && 
-                            user.spec[key].includes(spec))){
-                            if(!result.some(u => u.name === user.name)) result.push(user);
+                        // Проверяем, есть ли у пользователя массив специализаций
+                        if (!user.spec || user.spec.length === 0) return;
+                        
+                        // Проверяем каждую специализацию пользователя
+                        const hasMatchingSpec = user.spec.some(specId => {
+                            // Получаем специализацию по id
+                            const userSpec = specMap.get(specId);
+                            
+                            // Проверяем, соответствует ли специализация фильтру
+                            if (!userSpec || userSpec.name !== key) return false;
+                            
+                            // Проверяем, есть ли активные spec внутри специализации
+                            return userSpec.spec?.some(s => 
+                                activeSpecsSet.has(s.name)
+                            ) ?? false;
+                        });
+                        
+                        // Если пользователь подходит, добавляем в результат
+                        if (hasMatchingSpec && !result.some(u => u.name === user.name)) {
+                            result.push(user);
                         }
-                    })
+                    });
                 }
-                // Если нет активных специализаций - ничего не делаем
             }
         });
-        
         setList(sel > 0 ? result : filteredList);
     };
 
@@ -169,9 +149,9 @@ export default function useListUser(){
                 </div>
                 <div className={styles.element_info}>
                     <div className={styles.element_name}>{value.name}</div>
-                    <div className={styles.element_role}>{value.role}</div>
+                    <div className={styles.element_role}>{value.role_name}</div>
                 </div>
-                {value.role !== Roles.SYSADMIN &&
+                {(value.role_name !== Roles.SYSADMIN && (me && (me.role_name === Roles.ADMIN || me.role_name === Roles.SYSADMIN))) &&
                     <button className={styles.element_type} onClick={(e) => openEditPanel(value, e)}>
                         {<EditIcon height="100%" width="100%" color="var(--accent-color)"/>}
                     </button>
@@ -183,7 +163,7 @@ export default function useListUser(){
     const editContent = 
         <div ref={wrapperEditPanel} className={styles.edit_panel}>
             <OverflowPanel ref={editPanel} close={closeEditPanel}>
-                <RadioGroup content={roles} managerTrigger={curRole} handleSelect={setRole}/>
+                <RadioGroup content={roles} managerTrigger={curRole} handleSelect={editRole}/>
                 <DecorateButton onClick={deleteUser}>Удалить</DecorateButton>
             </OverflowPanel>
         </div>

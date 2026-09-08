@@ -1,14 +1,16 @@
 
 import { Header } from "@/Components/Dummies/Header";
-import { useState, useMemo, useRef } from "react";
-import { Event } from "./types";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { months } from "./constants";
 import useRadioFilter from "@/Hooks/useRadioFilter";
 import { OverflowPanel } from "@/Components/Wrapper/OverflowPanel";
 import useNavigation from "@/Hooks/useNavigation";
+import { Event } from "@/Models/Common/Event";
+import useData from "@/Hooks/useData";
 
 
 export default function useCalendarPage(getDate?: (date: string) => void){
+    const {getData} = useData();
     const { goBack } = useNavigation();
     const today = new Date();
     const [date, setDate] = useState(new Date(today.getFullYear(), today.getMonth() + 1));
@@ -21,65 +23,28 @@ export default function useCalendarPage(getDate?: (date: string) => void){
         goBack();
     }
 
-    const mainevent: Event[] = [
-        {
-            name: "Event2334566778889009",
-            date: new Date(2026, 3, 19),
-            partition: 0
-        },
-        {
-            name: "Event2",
-            date: new Date(2026, 3, 20),
-            partition: 1
-        },
-        {
-            name: "Event3",
-            date: new Date(2026, 3, 21),
-            partition: 2
-        },
-        {
-            name: "Event4",
-            date: new Date(2026, 3, 21),
-            partition: 0
-        },
-        {
-            name: "Event5",
-            date: new Date(2026, 3, 21),
-            partition: 1
-        },
-        {
-            name: "Event31",
-            date: new Date(2026, 3, 21),
-            partition: 2
-        },
-        {
-            name: "Event41",
-            date: new Date(2026, 3, 21),
-            partition: 0
-        },
-        {
-            name: "Event51",
-            date: new Date(2026, 3, 21),
-            partition: 1
-        }
-    ]
-    const [events, setEvents] = useState<Event[]>(mainevent);
+    const mainevent: Event[] = getData.events().data as Event[];
+    const [events, setEvents] = useState<Event[]>([]);
 
     const updateList = (fil: string) =>{
         if(fil === "Все"){
             setEvents(mainevent);
         }
         else if(fil === "Участие"){
-            setEvents(mainevent.filter(e => e.partition > 0));
+            setEvents(mainevent.filter(e => e.isPart));
         }
         else if(fil === "Мои"){
-            setEvents(mainevent.filter(e => e.partition === 2));                
+            setEvents(mainevent.filter(e => e.isYour));                
         }
     }
 
     const varFilter = ["Все", "Участие", "Мои"];
     const content = useMemo(() => ({filter:varFilter, initFilter:"Все", storageName:"filter-event", updateList:updateList}), []);
     const [filter, openFilter] = useRadioFilter(content);
+
+    useEffect(() => {
+        if(mainevent) setEvents(mainevent);
+    }, [mainevent]);
 
     const datePanel = useRef<HTMLDivElement>(null);
     

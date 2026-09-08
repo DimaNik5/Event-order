@@ -6,12 +6,13 @@ import Props from './types';
     content(el: T): React.ReactNode (div)
 */
 export default function List<T>(props: Props<T>){
+    const list = props.list || [];
 
     return (
         
         <div className={styles.list}>
         {
-            props.list.map((value: T, key) =>{
+            list.map((value: T, key) =>{
                 return <div key={key} className={styles.element} onClick={() => {if(props.onClick)props.onClick(value)}}>
                    {props.content(value).props.children}
                 </div>

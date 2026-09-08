@@ -1,7 +1,6 @@
 package org.ru.bot.api.repository.comment;
 
 import jakarta.persistence.*;
-import org.springframework.data.annotation.Id;
 
 import java.time.Instant;
 

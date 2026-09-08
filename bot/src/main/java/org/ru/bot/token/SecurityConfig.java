@@ -1,7 +1,6 @@
 package org.ru.bot.token;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +9,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -20,6 +20,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.stereotype.Component;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -38,6 +39,7 @@ public class SecurityConfig {
     private static final String[] PUBLIC_ENDPOINTS = {
             "/user/login",
             "/user/refresh",
+//            "/user/me",
             "/user/create",
             "/error",
             "/swagger-ui/**",
@@ -47,13 +49,11 @@ public class SecurityConfig {
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final CustomAccessDeniedHandler accessDeniedHandler;
     private final JwtTokenFilter jwtTokenFilter;
-    private final TelegramTokenFilter telegramTokenFilter;
 
-    public SecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, CustomAccessDeniedHandler accessDeniedHandler, JwtTokenFilter jwtTokenFilter, TelegramTokenFilter telegramTokenFilter) {
+    public SecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, CustomAccessDeniedHandler accessDeniedHandler, JwtTokenFilter jwtTokenFilter) {
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.accessDeniedHandler = accessDeniedHandler;
         this.jwtTokenFilter = jwtTokenFilter;
-        this.telegramTokenFilter = telegramTokenFilter;
     }
 
     /**
@@ -69,6 +69,7 @@ public class SecurityConfig {
         http
                 // Отключение CSRF защиты, так как используем JWT
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults())
 
                 // Настройка управления сессией (без сохранения состояния)
                 .sessionManagement(session -> session
@@ -76,8 +77,8 @@ public class SecurityConfig {
                 )
 
                 // Добавление JWT фильтра перед стандартным фильтром аутентификации
-                .addFilterBefore(telegramTokenFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(jwtTokenFilter, TelegramTokenFilter.class)
+//                .addFilterBefore(telegramTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 // Настройка правил авторизации запросов
                 .authorizeHttpRequests(auth -> auth
                         // Статические файлы и публичные эндпоинты

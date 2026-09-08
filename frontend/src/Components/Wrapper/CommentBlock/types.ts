@@ -1,13 +1,7 @@
-
-export interface Comment{
-    id: number,
-    author: string,
-    content: string,
-    time: string,
-    isChanged: boolean
-}
+import { Comment } from "@/Models/Common/Comment";
 
 export interface Props{
     comments: Comment[],
+    author?: string,
     isMine: boolean
 }

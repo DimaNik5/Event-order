@@ -22,6 +22,8 @@ import {LensIcon} from "./lens"
 import {EyeIcon} from "./eye"
 import {SaveIcon} from "./save"
 import { PointsIcon } from "./points";
+import { PhotoIcon } from "./photo";
+import { SunIcon } from "./sun";
 
 export const IconElements: Record<IconName, React.ReactElement> = {
     "arrow": <ArrowIcon height="100%" width="100%" color='var(--info-color)'/>,
@@ -45,5 +47,7 @@ export const IconElements: Record<IconName, React.ReactElement> = {
     "lens": <LensIcon height="100%" width="100%" color='var(--info-color)'/>,
     "eye": <EyeIcon height="100%" width="100%" color='var(--info-color)'/>,
     "save": <SaveIcon height="100%" width="100%" color='var(--info-color)'/>,
-    "points": <PointsIcon height="100%" width="100%" color='var(--info-color)'/>
+    "points": <PointsIcon height="100%" width="100%" color='var(--info-color)'/>,
+    "sun": <SunIcon height="100%" width="100%" color='var(--info-color)'/>,
+    "photo": <PhotoIcon height="100%" width="100%" color='var(--info-color)'/>,
 };

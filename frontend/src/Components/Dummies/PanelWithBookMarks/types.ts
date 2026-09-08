@@ -1,4 +1,4 @@
-import { Page } from "@/Components/Pages/EventContentPage/types";
+import { Page } from "@/Models/Common/Page";
 
 export interface Props{
     pages: Page[]

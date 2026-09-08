@@ -1,10 +1,9 @@
 package org.ru.bot.api.repository.specialization;
 
 import jakarta.persistence.*;
-import org.springframework.data.annotation.Id;
 
 @Entity
-@Table(name = "events")
+@Table(name = "specialization")
 public class Specialization {
 
     @Id

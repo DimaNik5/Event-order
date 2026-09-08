@@ -8,7 +8,7 @@ import ResizablePanel from "@/Components/Wrapper/ResizablePanel";
 
 
 export default function CreateEventPage(){
-    const [head, getDate, inputContent, setNewDate] = useCreateEventPage()
+    const [head, getDate, inputContent, setNewDate, createBtn] = useCreateEventPage()
 
     return(
         <div className={styles.container}>
@@ -19,8 +19,8 @@ export default function CreateEventPage(){
                 <InfoLayput header={head}>
                     <div className={styles.contant}>
                         <ResizablePanel>
-                                {inputContent}
-                            <DecorateButton>Создать</DecorateButton>
+                            {inputContent}
+                            {createBtn}
                         </ResizablePanel>
                     </div>
                 </InfoLayput>
